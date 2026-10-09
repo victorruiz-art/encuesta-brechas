@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encuesta brechas jóvenes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+:root{
+  --bg:#f7f6f3;--panel:#ffffff;--fg:#1f1e1c;--muted:#6b6862;--line:#e4e1da;
+  --accent:#c4623f;--bar-muted:#cfcac0;--tip-bg:#ffffff;--shadow:0 6px 20px rgba(0,0,0,.08);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Source Serif 4",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#1c1b19;--panel:#262522;--fg:#ece9e3;--muted:#a19d95;--line:#3a3833;
+    --accent:#e08560;--bar-muted:#55524b;--tip-bg:#2f2e2a;--shadow:0 6px 20px rgba(0,0,0,.4);}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.45}
+.eb{display:flex;flex-direction:column;gap:2rem;max-width:72rem;margin:0 auto;padding:2rem 16px 3rem}
+.eb-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);margin:0;line-height:1.2}
+.eb-lede{color:var(--muted);margin:.5rem 0 0;font-size:1rem}
+.eb-lede b{font-weight:600;color:var(--fg)}
+.eb-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr));gap:1rem}
+.eb-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1.25rem;position:relative;min-width:0}
+.eb-tile-label{color:var(--muted);font-size:.8rem}
+.eb-tile-num{font-family:var(--serif);font-weight:400;font-size:2.6rem;font-variant-numeric:tabular-nums;margin-top:.25rem;line-height:1.1}
+.eb-tile-note{color:var(--muted);font-size:.8rem;margin-top:.25rem}
+.eb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,26rem),1fr));gap:1rem}
+.eb-h{font-size:1.05rem;font-weight:500;margin:0}
+.eb-note{color:var(--muted);font-size:.8rem;margin:.25rem 0 1rem}
+.eb-bars{display:flex;flex-direction:column;gap:.6rem}
+.eb-row{display:flex;flex-direction:column;gap:2px;cursor:default}
+.eb-row-label{font-size:.82rem}
+.eb-track{display:flex;align-items:center;gap:.5rem}
+.eb-bar{height:16px;border-radius:4px;min-width:4px;transition:opacity .15s}
+.eb-row:hover .eb-bar{opacity:.8}
+.eb-val{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.eb-tip{position:absolute;pointer-events:none;background:var(--tip-bg);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:.35rem .6rem;font-size:.8rem;max-width:16rem;display:none;z-index:2}
+.eb-tip-k{color:var(--muted)}
+.eb-tablebox{overflow:auto;max-height:32rem}
+.eb-table{width:100%;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums}
+.eb-table th{text-align:left;font-weight:500;color:var(--muted);padding:.4rem .6rem;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel)}
+.eb-table td{padding:.4rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+.eb-table .num{text-align:right;white-space:nowrap}
+.eb-foot{color:var(--muted);font-size:.8rem;margin:0}
+</style>
+</head>
+<body>
+<div class="eb">
+  <header>
+    <h1 class="eb-title">Encuesta: brechas en la integración socioeconómica de jóvenes</h1>
+    <p class="eb-lede" id="lede"></p>
+  </header>
+
+  <section class="eb-tiles">
+    <div class="eb-card"><div class="eb-tile-label">Organizaciones que respondieron</div><div class="eb-tile-num" id="t-resp">—</div></div>
+    <div class="eb-card"><div class="eb-tile-label">Brechas distintas elegidas</div><div class="eb-tile-num" id="t-brechas">—</div></div>
+    <div class="eb-card"><div class="eb-tile-label">Soluciones seleccionadas</div><div class="eb-tile-num" id="t-sel">—</div><div class="eb-tile-note">La pregunta permitía elegir varias</div></div>
+    <div class="eb-card"><div class="eb-tile-label">Eligieron más de una solución</div><div class="eb-tile-num" id="t-mult">—</div></div>
+  </section>
+
+  <section class="eb-grid">
+    <div class="eb-card">
+      <h2 class="eb-h">Brecha priorizada</h2>
+      <p class="eb-note">Una brecha por organización · número de respuestas y % del total</p>
+      <div class="eb-bars" id="chart-brecha"></div>
+      <div class="eb-tip" id="tip-brecha"></div>
+    </div>
+    <div class="eb-card">
+      <h2 class="eb-h">Soluciones que apropiarían</h2>
+      <p class="eb-note">Selección múltiple · veces que se eligió cada solución</p>
+      <div class="eb-bars" id="chart-sol"></div>
+      <div class="eb-tip" id="tip-sol"></div>
+    </div>
+  </section>
+
+  <section class="eb-card">
+    <h2 class="eb-h">Soluciones dentro de cada brecha</h2>
+    <p class="eb-note">Qué parte de las organizaciones que eligieron una brecha escogió cada solución</p>
+    <div class="eb-tablebox">
+      <table class="eb-table">
+        <thead><tr><th>Brecha</th><th>Solución</th><th class="num">Selecciones</th><th class="num">% de la brecha</th></tr></thead>
+        <tbody id="tabla-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="eb-foot">Fuente: 21 respuestas de la encuesta. Una respuesta registrada como «´´» se contó como «Desarticulación entre programas», al repetir la fila anterior.</p>
+</div>
+
+<script>
+// Datos: una fila por solución seleccionada (id = organización que respondió)
+const respuestas = [
+  [1,"Barreras jurídicas y económicas","Pago condicionado por prácticas laborales"],
+  [1,"Barreras jurídicas y económicas","Incidencia jurídica local y nacional"],
+  [2,"Redes familiares débiles","Comunicación con las familias"],
+  [3,"Estereotipos en selección de personal","Sensibilización a empresas y RR.HH."],
+  [4,"Desarticulación entre programas","Micrositio empresas-programas"],
+  [5,"Desarticulación entre programas","Micrositio empresas-programas"],
+  [6,"Cobertura insuficiente","Ruta de acompañamiento al autoempleo"],
+  [7,"Interrupción del acompañamiento","Financiación multianual"],
+  [8,"Desarticulación entre programas","Micrositio empresas-programas"],
+  [9,"Interrupción del acompañamiento","Financiación multianual"],
+  [10,"Consumo problemático de SPA","Sensibilizar equipos sobre SPA"],
+  [10,"Consumo problemático de SPA","Resignificación del consumo"],
+  [11,"Redes familiares débiles","Comunicación con las familias"],
+  [12,"Cobertura insuficiente","Ampliar oferta con énfasis en autoempleo"],
+  [13,"Cobertura insuficiente","Ampliar oferta con énfasis en autoempleo"],
+  [14,"Consumo problemático de SPA","Activar rutas de atención SPA"],
+  [15,"Redes familiares débiles","Comunicación con las familias"],
+  [16,"Consumo problemático de SPA","Canales de acceso a salud mental"],
+  [16,"Consumo problemático de SPA","Activar rutas de atención SPA"],
+  [17,"Redes familiares débiles","Comunicación con las familias"],
+  [18,"Desarticulación entre programas","Micrositio empresas-programas"],
+  [19,"Interrupción del acompañamiento","Financiación multianual"],
+  [20,"Redes familiares débiles","Comunicación con las familias"],
+  [21,"Desarticulación entre programas","Micrositio empresas-programas"]
+].map(([id, brecha, solucion]) => ({ id, brecha, solucion }));
+
+const pct = d3.format('.0%'), pct1 = d3.format('.1%'), num = d3.format(',');
+
+// Cálculos
+const total = new Set(respuestas.map(r => r.id)).size;
+const porId = d3.rollup(respuestas, v => v.length, r => r.id);
+const idsPorBrecha = d3.rollup(respuestas, v => new Set(v.map(r => r.id)).size, r => r.brecha);
+
+const porBrecha = [...idsPorBrecha].map(([brecha, n]) => ({ brecha, respuestas: n, porcentaje: n / total }))
+  .sort((a, b) => b.respuestas - a.respuestas || a.brecha.localeCompare(b.brecha));
+
+const porSolucion = d3.rollups(respuestas, v => ({ brecha: v[0].brecha, selecciones: v.length }), r => r.solucion)
+  .map(([solucion, d]) => ({ solucion, ...d }))
+  .sort((a, b) => b.selecciones - a.selecciones || a.solucion.localeCompare(b.solucion));
+
+const cruce = porSolucion.map(d => ({ ...d, porcentaje: d.selecciones / idsPorBrecha.get(d.brecha) }))
+  .sort((a, b) => idsPorBrecha.get(b.brecha) - idsPorBrecha.get(a.brecha) || a.brecha.localeCompare(b.brecha) || b.selecciones - a.selecciones);
+
+// Indicadores
+document.getElementById('t-resp').textContent = num(total);
+document.getElementById('t-brechas').textContent = num(idsPorBrecha.size);
+document.getElementById('t-sel').textContent = num(respuestas.length);
+document.getElementById('t-mult').textContent = num([...porId.values()].filter(n => n > 1).length);
+
+// Frase principal
+const max = porBrecha[0].respuestas;
+const top = porBrecha.filter(d => d.respuestas === max).map(d => d.brecha.toLowerCase());
+let nombres = top.length > 1 ? top.slice(0, -1).join(', ') + ' y ' + top[top.length - 1] : top[0];
+nombres = nombres.charAt(0).toUpperCase() + nombres.slice(1);
+const lede = d3.select('#lede');
+lede.append('b').text(nombres);
+lede.append('span').text(top.length > 1 ? ' son las brechas más señaladas, con ' : ' es la brecha más señalada, con ');
+lede.append('b').text(num(max));
+lede.append('span').text((top.length > 1 ? ' respuestas cada una (' : ' respuestas (') + pct(porBrecha[0].porcentaje) + ' del total).');
+
+// Barras horizontales con tooltip
+function bars(el, tip, rows, opts) {
+  const sel = d3.select(el), card = el.parentNode;
+  const vmax = d3.max(rows, d => d[opts.value]);
+  rows.forEach(d => {
+    const row = sel.append('div').attr('class', 'eb-row');
+    row.append('div').attr('class', 'eb-row-label').text(d[opts.label]);
+    const track = row.append('div').attr('class', 'eb-track');
+    track.append('div').attr('class', 'eb-bar')
+      .style('width', `calc((100% - 5.5rem) * ${d[opts.value] / vmax})`)
+      .style('background', d[opts.value] === vmax ? 'var(--accent)' : 'var(--bar-muted)');
+    track.append('span').attr('class', 'eb-val').text(opts.valText(d));
+    row.on('mousemove', ev => {
+      const t = d3.select(tip); t.selectAll('*').remove();
+      t.append('div').attr('class', 'eb-tip-k').text(d[opts.label]);
+      opts.tipLines(d).forEach(l => t.append('div').text(l));
+      tip.style.display = 'block';
+      const b = card.getBoundingClientRect(), w = tip.offsetWidth;
+      let x = ev.clientX - b.left + 12;
+      if (x + w > b.width - 8) x = Math.max(8, ev.clientX - b.left - w - 12);
+      tip.style.left = x + 'px'; tip.style.top = (ev.clientY - b.top + 12) + 'px';
+    }).on('mouseleave', () => { tip.style.display = 'none'; });
+  });
+}
+
+bars(document.getElementById('chart-brecha'), document.getElementById('tip-brecha'), porBrecha, {
+  label: 'brecha', value: 'respuestas',
+  valText: d => `${num(d.respuestas)} · ${pct(d.porcentaje)}`,
+  tipLines: d => [`${num(d.respuestas)} respuestas`, `${pct1(d.porcentaje)} del total`]
+});
+bars(document.getElementById('chart-sol'), document.getElementById('tip-sol'), porSolucion, {
+  label: 'solucion', value: 'selecciones',
+  valText: d => num(d.selecciones),
+  tipLines: d => [`${num(d.selecciones)} ${d.selecciones === 1 ? 'selección' : 'selecciones'}`, `Brecha: ${d.brecha}`]
+});
+
+// Tabla
+const tb = d3.select('#tabla-body');
+cruce.forEach(d => {
+  const tr = tb.append('tr');
+  tr.append('td').text(d.brecha);
+  tr.append('td').text(d.solucion);
+  tr.append('td').attr('class', 'num').text(num(d.selecciones));
+  tr.append('td').attr('class', 'num').text(pct(d.porcentaje));
+});
+</script>
+</body>
+</html>
