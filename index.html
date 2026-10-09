@@ -6,7 +6,6 @@
 <title>Encuesta brechas jóvenes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 :root{
   --bg:#f7f6f3;--panel:#ffffff;--fg:#1f1e1c;--muted:#6b6862;--line:#e4e1da;
@@ -120,19 +119,28 @@ const respuestas = [
   [21,"Desarticulación entre programas","Micrositio empresas-programas"]
 ].map(([id, brecha, solucion]) => ({ id, brecha, solucion }));
 
-const pct = d3.format('.0%'), pct1 = d3.format('.1%'), num = d3.format(',');
+const pct = v => Math.round(v * 100) + '%';
+const pct1 = v => (v * 100).toFixed(1).replace('.', ',') + '%';
+const num = v => String(v);
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
 // Cálculos
-const total = new Set(respuestas.map(r => r.id)).size;
-const porId = d3.rollup(respuestas, v => v.length, r => r.id);
-const idsPorBrecha = d3.rollup(respuestas, v => new Set(v.map(r => r.id)).size, r => r.brecha);
+const porId = new Map();
+for (const r of respuestas) porId.set(r.id, (porId.get(r.id) || 0) + 1);
+const total = porId.size;
+const setsBrecha = new Map();
+for (const r of respuestas) { if (!setsBrecha.has(r.brecha)) setsBrecha.set(r.brecha, new Set()); setsBrecha.get(r.brecha).add(r.id); }
+const idsPorBrecha = new Map([...setsBrecha].map(([k, s]) => [k, s.size]));
 
 const porBrecha = [...idsPorBrecha].map(([brecha, n]) => ({ brecha, respuestas: n, porcentaje: n / total }))
   .sort((a, b) => b.respuestas - a.respuestas || a.brecha.localeCompare(b.brecha));
 
-const porSolucion = d3.rollups(respuestas, v => ({ brecha: v[0].brecha, selecciones: v.length }), r => r.solucion)
-  .map(([solucion, d]) => ({ solucion, ...d }))
-  .sort((a, b) => b.selecciones - a.selecciones || a.solucion.localeCompare(b.solucion));
+const solMap = new Map();
+for (const r of respuestas) {
+  if (!solMap.has(r.solucion)) solMap.set(r.solucion, { solucion: r.solucion, brecha: r.brecha, selecciones: 0 });
+  solMap.get(r.solucion).selecciones += 1;
+}
+const porSolucion = [...solMap.values()].sort((a, b) => b.selecciones - a.selecciones || a.solucion.localeCompare(b.solucion));
 
 const cruce = porSolucion.map(d => ({ ...d, porcentaje: d.selecciones / idsPorBrecha.get(d.brecha) }))
   .sort((a, b) => idsPorBrecha.get(b.brecha) - idsPorBrecha.get(a.brecha) || a.brecha.localeCompare(b.brecha) || b.selecciones - a.selecciones);
@@ -148,34 +156,35 @@ const max = porBrecha[0].respuestas;
 const top = porBrecha.filter(d => d.respuestas === max).map(d => d.brecha.toLowerCase());
 let nombres = top.length > 1 ? top.slice(0, -1).join(', ') + ' y ' + top[top.length - 1] : top[0];
 nombres = nombres.charAt(0).toUpperCase() + nombres.slice(1);
-const lede = d3.select('#lede');
-lede.append('b').text(nombres);
-lede.append('span').text(top.length > 1 ? ' son las brechas más señaladas, con ' : ' es la brecha más señalada, con ');
-lede.append('b').text(num(max));
-lede.append('span').text((top.length > 1 ? ' respuestas cada una (' : ' respuestas (') + pct(porBrecha[0].porcentaje) + ' del total).');
+const lede = document.getElementById('lede');
+lede.append(el('b', null, nombres),
+  el('span', null, top.length > 1 ? ' son las brechas más señaladas, con ' : ' es la brecha más señalada, con '),
+  el('b', null, num(max)),
+  el('span', null, (top.length > 1 ? ' respuestas cada una (' : ' respuestas (') + pct(porBrecha[0].porcentaje) + ' del total).'));
 
 // Barras horizontales con tooltip
-function bars(el, tip, rows, opts) {
-  const sel = d3.select(el), card = el.parentNode;
-  const vmax = d3.max(rows, d => d[opts.value]);
+function bars(box, tip, rows, opts) {
+  const card = box.parentNode;
+  const vmax = Math.max(...rows.map(d => d[opts.value]));
   rows.forEach(d => {
-    const row = sel.append('div').attr('class', 'eb-row');
-    row.append('div').attr('class', 'eb-row-label').text(d[opts.label]);
-    const track = row.append('div').attr('class', 'eb-track');
-    track.append('div').attr('class', 'eb-bar')
-      .style('width', `calc((100% - 5.5rem) * ${d[opts.value] / vmax})`)
-      .style('background', d[opts.value] === vmax ? 'var(--accent)' : 'var(--bar-muted)');
-    track.append('span').attr('class', 'eb-val').text(opts.valText(d));
-    row.on('mousemove', ev => {
-      const t = d3.select(tip); t.selectAll('*').remove();
-      t.append('div').attr('class', 'eb-tip-k').text(d[opts.label]);
-      opts.tipLines(d).forEach(l => t.append('div').text(l));
+    const row = el('div', 'eb-row');
+    row.append(el('div', 'eb-row-label', d[opts.label]));
+    const track = el('div', 'eb-track');
+    const bar = el('div', 'eb-bar');
+    bar.style.width = `calc((100% - 5.5rem) * ${d[opts.value] / vmax})`;
+    bar.style.background = d[opts.value] === vmax ? 'var(--accent)' : 'var(--bar-muted)';
+    track.append(bar, el('span', 'eb-val', opts.valText(d)));
+    row.append(track);
+    row.addEventListener('mousemove', ev => {
+      tip.replaceChildren(el('div', 'eb-tip-k', d[opts.label]), ...opts.tipLines(d).map(l => el('div', null, l)));
       tip.style.display = 'block';
       const b = card.getBoundingClientRect(), w = tip.offsetWidth;
       let x = ev.clientX - b.left + 12;
       if (x + w > b.width - 8) x = Math.max(8, ev.clientX - b.left - w - 12);
       tip.style.left = x + 'px'; tip.style.top = (ev.clientY - b.top + 12) + 'px';
-    }).on('mouseleave', () => { tip.style.display = 'none'; });
+    });
+    row.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+    box.append(row);
   });
 }
 
@@ -191,13 +200,11 @@ bars(document.getElementById('chart-sol'), document.getElementById('tip-sol'), p
 });
 
 // Tabla
-const tb = d3.select('#tabla-body');
+const tb = document.getElementById('tabla-body');
 cruce.forEach(d => {
-  const tr = tb.append('tr');
-  tr.append('td').text(d.brecha);
-  tr.append('td').text(d.solucion);
-  tr.append('td').attr('class', 'num').text(num(d.selecciones));
-  tr.append('td').attr('class', 'num').text(pct(d.porcentaje));
+  const tr = el('tr');
+  tr.append(el('td', null, d.brecha), el('td', null, d.solucion), el('td', 'num', num(d.selecciones)), el('td', 'num', pct(d.porcentaje)));
+  tb.append(tr);
 });
 </script>
 </body>
