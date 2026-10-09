@@ -1,11 +1,10 @@
 <!doctype html>
-<html lang="es">
-<head>
+<html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Encuesta brechas jóvenes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Source+Serif+4:wght@400&amp;display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f7f6f3;--panel:#ffffff;--fg:#1f1e1c;--muted:#6b6862;--line:#e4e1da;
@@ -51,28 +50,28 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-
 <div class="eb">
   <header>
     <h1 class="eb-title">Encuesta: brechas en la integración socioeconómica de jóvenes</h1>
-    <p class="eb-lede" id="lede"></p>
+    <p class="eb-lede" id="lede"><b>Desarticulación entre programas y redes familiares débiles</b><span> son las brechas más señaladas, con </span><b>5</b><span> respuestas cada una (24% del total).</span></p>
   </header>
 
   <section class="eb-tiles">
-    <div class="eb-card"><div class="eb-tile-label">Organizaciones que respondieron</div><div class="eb-tile-num" id="t-resp">—</div></div>
-    <div class="eb-card"><div class="eb-tile-label">Brechas distintas elegidas</div><div class="eb-tile-num" id="t-brechas">—</div></div>
-    <div class="eb-card"><div class="eb-tile-label">Soluciones seleccionadas</div><div class="eb-tile-num" id="t-sel">—</div><div class="eb-tile-note">La pregunta permitía elegir varias</div></div>
-    <div class="eb-card"><div class="eb-tile-label">Eligieron más de una solución</div><div class="eb-tile-num" id="t-mult">—</div></div>
+    <div class="eb-card"><div class="eb-tile-label">Organizaciones que respondieron</div><div class="eb-tile-num" id="t-resp">21</div></div>
+    <div class="eb-card"><div class="eb-tile-label">Brechas distintas elegidas</div><div class="eb-tile-num" id="t-brechas">7</div></div>
+    <div class="eb-card"><div class="eb-tile-label">Soluciones seleccionadas</div><div class="eb-tile-num" id="t-sel">24</div><div class="eb-tile-note">La pregunta permitía elegir varias</div></div>
+    <div class="eb-card"><div class="eb-tile-label">Eligieron más de una solución</div><div class="eb-tile-num" id="t-mult">3</div></div>
   </section>
 
   <section class="eb-grid">
     <div class="eb-card">
       <h2 class="eb-h">Brecha priorizada</h2>
       <p class="eb-note">Una brecha por organización · número de respuestas y % del total</p>
-      <div class="eb-bars" id="chart-brecha"></div>
-      <div class="eb-tip" id="tip-brecha"></div>
+      <div class="eb-bars" id="chart-brecha"><div class="eb-row" title="Desarticulación entre programas: 5 · 24%"><div class="eb-row-label">Desarticulación entre programas</div><div class="eb-track"><div class="eb-bar" style="width: calc(1 * (100% - 5.5rem)); background: var(--accent);"></div><span class="eb-val">5 · 24%</span></div></div><div class="eb-row" title="Redes familiares débiles: 5 · 24%"><div class="eb-row-label">Redes familiares débiles</div><div class="eb-track"><div class="eb-bar" style="width: calc(1 * (100% - 5.5rem)); background: var(--accent);"></div><span class="eb-val">5 · 24%</span></div></div><div class="eb-row" title="Cobertura insuficiente: 3 · 14%"><div class="eb-row-label">Cobertura insuficiente</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.6 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">3 · 14%</span></div></div><div class="eb-row" title="Consumo problemático de SPA: 3 · 14%"><div class="eb-row-label">Consumo problemático de SPA</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.6 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">3 · 14%</span></div></div><div class="eb-row" title="Interrupción del acompañamiento: 3 · 14%"><div class="eb-row-label">Interrupción del acompañamiento</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.6 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">3 · 14%</span></div></div><div class="eb-row" title="Barreras jurídicas y económicas: 1 · 5%"><div class="eb-row-label">Barreras jurídicas y económicas</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1 · 5%</span></div></div><div class="eb-row" title="Estereotipos en selección de personal: 1 · 5%"><div class="eb-row-label">Estereotipos en selección de personal</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1 · 5%</span></div></div></div>
+      
     </div>
     <div class="eb-card">
       <h2 class="eb-h">Soluciones que apropiarían</h2>
       <p class="eb-note">Selección múltiple · veces que se eligió cada solución</p>
-      <div class="eb-bars" id="chart-sol"></div>
-      <div class="eb-tip" id="tip-sol"></div>
+      <div class="eb-bars" id="chart-sol"><div class="eb-row" title="Comunicación con las familias: 5"><div class="eb-row-label">Comunicación con las familias</div><div class="eb-track"><div class="eb-bar" style="width: calc(1 * (100% - 5.5rem)); background: var(--accent);"></div><span class="eb-val">5</span></div></div><div class="eb-row" title="Micrositio empresas-programas: 5"><div class="eb-row-label">Micrositio empresas-programas</div><div class="eb-track"><div class="eb-bar" style="width: calc(1 * (100% - 5.5rem)); background: var(--accent);"></div><span class="eb-val">5</span></div></div><div class="eb-row" title="Financiación multianual: 3"><div class="eb-row-label">Financiación multianual</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.6 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">3</span></div></div><div class="eb-row" title="Activar rutas de atención SPA: 2"><div class="eb-row-label">Activar rutas de atención SPA</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.4 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">2</span></div></div><div class="eb-row" title="Ampliar oferta con énfasis en autoempleo: 2"><div class="eb-row-label">Ampliar oferta con énfasis en autoempleo</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.4 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">2</span></div></div><div class="eb-row" title="Canales de acceso a salud mental: 1"><div class="eb-row-label">Canales de acceso a salud mental</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1</span></div></div><div class="eb-row" title="Incidencia jurídica local y nacional: 1"><div class="eb-row-label">Incidencia jurídica local y nacional</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1</span></div></div><div class="eb-row" title="Pago condicionado por prácticas laborales: 1"><div class="eb-row-label">Pago condicionado por prácticas laborales</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1</span></div></div><div class="eb-row" title="Resignificación del consumo: 1"><div class="eb-row-label">Resignificación del consumo</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1</span></div></div><div class="eb-row" title="Ruta de acompañamiento al autoempleo: 1"><div class="eb-row-label">Ruta de acompañamiento al autoempleo</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1</span></div></div><div class="eb-row" title="Sensibilización a empresas y RR.HH.: 1"><div class="eb-row-label">Sensibilización a empresas y RR.HH.</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1</span></div></div><div class="eb-row" title="Sensibilizar equipos sobre SPA: 1"><div class="eb-row-label">Sensibilizar equipos sobre SPA</div><div class="eb-track"><div class="eb-bar" style="width: calc(0.2 * (100% - 5.5rem)); background: var(--bar-muted);"></div><span class="eb-val">1</span></div></div></div>
+      
     </div>
   </section>
 
@@ -82,130 +81,15 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-
     <div class="eb-tablebox">
       <table class="eb-table">
         <thead><tr><th>Brecha</th><th>Solución</th><th class="num">Selecciones</th><th class="num">% de la brecha</th></tr></thead>
-        <tbody id="tabla-body"></tbody>
+        <tbody id="tabla-body"><tr><td>Desarticulación entre programas</td><td>Micrositio empresas-programas</td><td class="num">5</td><td class="num">100%</td></tr><tr><td>Redes familiares débiles</td><td>Comunicación con las familias</td><td class="num">5</td><td class="num">100%</td></tr><tr><td>Cobertura insuficiente</td><td>Ampliar oferta con énfasis en autoempleo</td><td class="num">2</td><td class="num">67%</td></tr><tr><td>Cobertura insuficiente</td><td>Ruta de acompañamiento al autoempleo</td><td class="num">1</td><td class="num">33%</td></tr><tr><td>Consumo problemático de SPA</td><td>Activar rutas de atención SPA</td><td class="num">2</td><td class="num">67%</td></tr><tr><td>Consumo problemático de SPA</td><td>Canales de acceso a salud mental</td><td class="num">1</td><td class="num">33%</td></tr><tr><td>Consumo problemático de SPA</td><td>Resignificación del consumo</td><td class="num">1</td><td class="num">33%</td></tr><tr><td>Consumo problemático de SPA</td><td>Sensibilizar equipos sobre SPA</td><td class="num">1</td><td class="num">33%</td></tr><tr><td>Interrupción del acompañamiento</td><td>Financiación multianual</td><td class="num">3</td><td class="num">100%</td></tr><tr><td>Barreras jurídicas y económicas</td><td>Incidencia jurídica local y nacional</td><td class="num">1</td><td class="num">100%</td></tr><tr><td>Barreras jurídicas y económicas</td><td>Pago condicionado por prácticas laborales</td><td class="num">1</td><td class="num">100%</td></tr><tr><td>Estereotipos en selección de personal</td><td>Sensibilización a empresas y RR.HH.</td><td class="num">1</td><td class="num">100%</td></tr></tbody>
       </table>
     </div>
   </section>
 
-  <p class="eb-foot">Fuente: 21 respuestas de la encuesta. Una respuesta registrada como «´´» se contó como «Desarticulación entre programas», al repetir la fila anterior.</p>
+  <p class="eb-foot">Fuente: 21 respuestas de la encuesta. Una respuesta registrada como «´´» se contó como «Desarticulación entre programas», al repetir la fila anterior. · Versión 3</p>
 </div>
 
-<script>
-// Datos: una fila por solución seleccionada (id = organización que respondió)
-const respuestas = [
-  [1,"Barreras jurídicas y económicas","Pago condicionado por prácticas laborales"],
-  [1,"Barreras jurídicas y económicas","Incidencia jurídica local y nacional"],
-  [2,"Redes familiares débiles","Comunicación con las familias"],
-  [3,"Estereotipos en selección de personal","Sensibilización a empresas y RR.HH."],
-  [4,"Desarticulación entre programas","Micrositio empresas-programas"],
-  [5,"Desarticulación entre programas","Micrositio empresas-programas"],
-  [6,"Cobertura insuficiente","Ruta de acompañamiento al autoempleo"],
-  [7,"Interrupción del acompañamiento","Financiación multianual"],
-  [8,"Desarticulación entre programas","Micrositio empresas-programas"],
-  [9,"Interrupción del acompañamiento","Financiación multianual"],
-  [10,"Consumo problemático de SPA","Sensibilizar equipos sobre SPA"],
-  [10,"Consumo problemático de SPA","Resignificación del consumo"],
-  [11,"Redes familiares débiles","Comunicación con las familias"],
-  [12,"Cobertura insuficiente","Ampliar oferta con énfasis en autoempleo"],
-  [13,"Cobertura insuficiente","Ampliar oferta con énfasis en autoempleo"],
-  [14,"Consumo problemático de SPA","Activar rutas de atención SPA"],
-  [15,"Redes familiares débiles","Comunicación con las familias"],
-  [16,"Consumo problemático de SPA","Canales de acceso a salud mental"],
-  [16,"Consumo problemático de SPA","Activar rutas de atención SPA"],
-  [17,"Redes familiares débiles","Comunicación con las familias"],
-  [18,"Desarticulación entre programas","Micrositio empresas-programas"],
-  [19,"Interrupción del acompañamiento","Financiación multianual"],
-  [20,"Redes familiares débiles","Comunicación con las familias"],
-  [21,"Desarticulación entre programas","Micrositio empresas-programas"]
-].map(([id, brecha, solucion]) => ({ id, brecha, solucion }));
 
-const pct = v => Math.round(v * 100) + '%';
-const pct1 = v => (v * 100).toFixed(1).replace('.', ',') + '%';
-const num = v => String(v);
-function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
-// Cálculos
-const porId = new Map();
-for (const r of respuestas) porId.set(r.id, (porId.get(r.id) || 0) + 1);
-const total = porId.size;
-const setsBrecha = new Map();
-for (const r of respuestas) { if (!setsBrecha.has(r.brecha)) setsBrecha.set(r.brecha, new Set()); setsBrecha.get(r.brecha).add(r.id); }
-const idsPorBrecha = new Map([...setsBrecha].map(([k, s]) => [k, s.size]));
 
-const porBrecha = [...idsPorBrecha].map(([brecha, n]) => ({ brecha, respuestas: n, porcentaje: n / total }))
-  .sort((a, b) => b.respuestas - a.respuestas || a.brecha.localeCompare(b.brecha));
-
-const solMap = new Map();
-for (const r of respuestas) {
-  if (!solMap.has(r.solucion)) solMap.set(r.solucion, { solucion: r.solucion, brecha: r.brecha, selecciones: 0 });
-  solMap.get(r.solucion).selecciones += 1;
-}
-const porSolucion = [...solMap.values()].sort((a, b) => b.selecciones - a.selecciones || a.solucion.localeCompare(b.solucion));
-
-const cruce = porSolucion.map(d => ({ ...d, porcentaje: d.selecciones / idsPorBrecha.get(d.brecha) }))
-  .sort((a, b) => idsPorBrecha.get(b.brecha) - idsPorBrecha.get(a.brecha) || a.brecha.localeCompare(b.brecha) || b.selecciones - a.selecciones);
-
-// Indicadores
-document.getElementById('t-resp').textContent = num(total);
-document.getElementById('t-brechas').textContent = num(idsPorBrecha.size);
-document.getElementById('t-sel').textContent = num(respuestas.length);
-document.getElementById('t-mult').textContent = num([...porId.values()].filter(n => n > 1).length);
-
-// Frase principal
-const max = porBrecha[0].respuestas;
-const top = porBrecha.filter(d => d.respuestas === max).map(d => d.brecha.toLowerCase());
-let nombres = top.length > 1 ? top.slice(0, -1).join(', ') + ' y ' + top[top.length - 1] : top[0];
-nombres = nombres.charAt(0).toUpperCase() + nombres.slice(1);
-const lede = document.getElementById('lede');
-lede.append(el('b', null, nombres),
-  el('span', null, top.length > 1 ? ' son las brechas más señaladas, con ' : ' es la brecha más señalada, con '),
-  el('b', null, num(max)),
-  el('span', null, (top.length > 1 ? ' respuestas cada una (' : ' respuestas (') + pct(porBrecha[0].porcentaje) + ' del total).'));
-
-// Barras horizontales con tooltip
-function bars(box, tip, rows, opts) {
-  const card = box.parentNode;
-  const vmax = Math.max(...rows.map(d => d[opts.value]));
-  rows.forEach(d => {
-    const row = el('div', 'eb-row');
-    row.append(el('div', 'eb-row-label', d[opts.label]));
-    const track = el('div', 'eb-track');
-    const bar = el('div', 'eb-bar');
-    bar.style.width = `calc((100% - 5.5rem) * ${d[opts.value] / vmax})`;
-    bar.style.background = d[opts.value] === vmax ? 'var(--accent)' : 'var(--bar-muted)';
-    track.append(bar, el('span', 'eb-val', opts.valText(d)));
-    row.append(track);
-    row.addEventListener('mousemove', ev => {
-      tip.replaceChildren(el('div', 'eb-tip-k', d[opts.label]), ...opts.tipLines(d).map(l => el('div', null, l)));
-      tip.style.display = 'block';
-      const b = card.getBoundingClientRect(), w = tip.offsetWidth;
-      let x = ev.clientX - b.left + 12;
-      if (x + w > b.width - 8) x = Math.max(8, ev.clientX - b.left - w - 12);
-      tip.style.left = x + 'px'; tip.style.top = (ev.clientY - b.top + 12) + 'px';
-    });
-    row.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-    box.append(row);
-  });
-}
-
-bars(document.getElementById('chart-brecha'), document.getElementById('tip-brecha'), porBrecha, {
-  label: 'brecha', value: 'respuestas',
-  valText: d => `${num(d.respuestas)} · ${pct(d.porcentaje)}`,
-  tipLines: d => [`${num(d.respuestas)} respuestas`, `${pct1(d.porcentaje)} del total`]
-});
-bars(document.getElementById('chart-sol'), document.getElementById('tip-sol'), porSolucion, {
-  label: 'solucion', value: 'selecciones',
-  valText: d => num(d.selecciones),
-  tipLines: d => [`${num(d.selecciones)} ${d.selecciones === 1 ? 'selección' : 'selecciones'}`, `Brecha: ${d.brecha}`]
-});
-
-// Tabla
-const tb = document.getElementById('tabla-body');
-cruce.forEach(d => {
-  const tr = el('tr');
-  tr.append(el('td', null, d.brecha), el('td', null, d.solucion), el('td', 'num', num(d.selecciones)), el('td', 'num', pct(d.porcentaje)));
-  tb.append(tr);
-});
-</script>
-</body>
-</html>
+</body></html>
